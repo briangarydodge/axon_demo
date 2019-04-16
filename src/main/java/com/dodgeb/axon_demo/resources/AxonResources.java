@@ -30,34 +30,17 @@ public class AxonResources {
 
     private final CommandGateway commandGateway;
 
-    private MongoDriverRespository respository;
 
     public AxonResources(CommandGateway commandGateway,
-                         @Qualifier("AppObjectMapper") ObjectMapper mapper,
-                         MongoDriverRespository respository) {
+                         @Qualifier("AppObjectMapper") ObjectMapper mapper) {
         this.commandGateway = commandGateway;
         this.mapper = mapper;
-        this.respository = respository;
-    }
-
-    @GetMapping(value = "/mongo")
-    public ResponseEntity insertMongo() {
-
-
-        Driver driver = Driver.builder()
-                .identifier("1234")
-                .driverNumber("dln1234")
-                .build();
-
-        respository.insert(driver);
-
-        return ResponseEntity.ok().body("ok");
     }
 
     @PostMapping(value = "/new",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity newDriver(HttpServletRequest request)
+    public ResponseEntity newDriver(final HttpServletRequest request)
             throws ExecutionException, InterruptedException, IOException {
 
         CompletableFuture<String> result = null;
@@ -85,7 +68,7 @@ public class AxonResources {
     @PostMapping(name = "/update",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateDriver(HttpServletRequest request)
+    public ResponseEntity updateDriver(final HttpServletRequest request)
             throws IOException, ExecutionException, InterruptedException {
 
         Driver driver = mapper.readValue(retrieveJsonBody(request), Driver.class);
@@ -110,13 +93,12 @@ public class AxonResources {
     }
 
 
-    private String retrieveJsonBody(HttpServletRequest request) throws IOException {
+    private String retrieveJsonBody(final HttpServletRequest request) throws IOException {
         String jsonString;
         try (BufferedReader reader = request.getReader()) {
             jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         }
         return jsonString;
     }
-
 
 }
