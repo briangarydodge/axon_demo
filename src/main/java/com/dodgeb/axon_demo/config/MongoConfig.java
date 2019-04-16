@@ -17,11 +17,14 @@ public class MongoConfig {
     @Value("${readmodel.uri}")
     private String uri;
 
+    @Value("${readmodel.timeout.connect}")
+    private int connectTimeout;
+
     private MongoClientOptions.Builder mongoClientOption() {
 
         return MongoClientOptions.builder()
 
-                .connectTimeout(10000);
+                .connectTimeout(connectTimeout);
     }
 
     @Bean
