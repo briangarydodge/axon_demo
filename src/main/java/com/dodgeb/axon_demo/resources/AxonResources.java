@@ -3,6 +3,7 @@ package com.dodgeb.axon_demo.resources;
 import com.dodgeb.axon_demo.command.ChangeDriverNumber;
 import com.dodgeb.axon_demo.command.CreateDriverCommand;
 import com.dodgeb.axon_demo.models.Driver;
+import com.dodgeb.axon_demo.repositories.MongoDriverRespository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -29,10 +30,28 @@ public class AxonResources {
 
     private final CommandGateway commandGateway;
 
+    private MongoDriverRespository respository;
+
     public AxonResources(CommandGateway commandGateway,
-                         @Qualifier("AppObjectMapper") ObjectMapper mapper) {
+                         @Qualifier("AppObjectMapper") ObjectMapper mapper,
+                         MongoDriverRespository respository) {
         this.commandGateway = commandGateway;
         this.mapper = mapper;
+        this.respository = respository;
+    }
+
+    @GetMapping(value = "/mongo")
+    public ResponseEntity insertMongo() {
+
+
+        Driver driver = Driver.builder()
+                .identifier("1234")
+                .driverNumber("dln1234")
+                .build();
+
+        respository.insert(driver);
+
+        return ResponseEntity.ok().body("ok");
     }
 
     @PostMapping(value = "/new",
