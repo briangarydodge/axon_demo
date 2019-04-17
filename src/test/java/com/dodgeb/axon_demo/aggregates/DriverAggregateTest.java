@@ -53,7 +53,7 @@ class DriverAggregateTest {
 
         fixture.given(event)
                 .when(new ChangeDriverNumber("123", "dln444"))
-                .expectEvents(new DriverNumberChanged("dln444"));
+                .expectEvents(new DriverNumberChanged("123", "dln444"));
 
 
     }

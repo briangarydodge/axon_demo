@@ -5,13 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@Document(collection = "drivers")
 public class Driver {
 
+    private String _id;
+
+    @Id
     private String identifier;
 
     private String driverNumber;

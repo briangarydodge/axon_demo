@@ -30,32 +30,25 @@ public class DriverAggregate {
 
     private String driverNumber;
 
-
     @CommandHandler
     public DriverAggregate(CreateDriverCommand command) {
-
         apply(new DriverCreatedEvent(command.getIdentifier(), command.getDriverNumber()));
     }
 
     @EventSourcingHandler
     public void handle(DriverCreatedEvent event) {
-
         this.identifier = event.getIdentifier();
         this.driverNumber = event.getDriverNumber();
-
     }
 
     @CommandHandler
     public void on(ChangeDriverNumber command) {
-
-        apply(new DriverNumberChanged(command.getDriverNumber()));
+        apply(new DriverNumberChanged(command.getIdentifier(), command.getDriverNumber()));
     }
 
     @EventSourcingHandler
     public void handle(DriverNumberChanged event) {
-
         this.driverNumber = event.getDriverNumber();
     }
-
 
 }

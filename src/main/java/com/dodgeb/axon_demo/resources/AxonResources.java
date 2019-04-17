@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -65,18 +70,41 @@ public class AxonResources {
                 .body("{\"AggregateId\": \"" + aggregateId + "\"}");
     }
 
-    @PostMapping(name = "/update",
+    private Map<String, String> parsePathParams(HttpServletRequest request) {
+
+        Iterator<String> pathParams = Arrays.asList("/update/{id}".split("/")).iterator();
+        Iterator<String> pathValues = Arrays.asList(request.getServletPath().split("/")).iterator();
+
+        Map<String, String> pathMap = new HashMap<>();
+
+        while(pathParams.hasNext() && pathValues.hasNext()) {
+            String key = pathParams.next();
+            String value = pathValues.next();
+            if(key.startsWith("{") && key.endsWith("}")) {
+                key = key.replaceAll("\\{", "");
+                key = key.replaceAll("}", "");
+                pathMap.put(key, value);
+            }
+        }
+        return pathMap;
+
+    }
+
+    @PostMapping(name = "/update/{id}",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public ResponseEntity updateDriver(final HttpServletRequest request)
             throws IOException, ExecutionException, InterruptedException {
+
+        Map<String, String> pathParams = parsePathParams(request);
+        String id = pathParams.get("id");
 
         Driver driver = mapper.readValue(retrieveJsonBody(request), Driver.class);
 
         CompletableFuture<String> result = null;
         if(driver != null) {
             ChangeDriverNumber command = ChangeDriverNumber.builder()
-                    .identifier(driver.getIdentifier())
+                    .identifier(id)
                     .driverNumber(driver.getDriverNumber())
                     .build();
             result = commandGateway.send(command);

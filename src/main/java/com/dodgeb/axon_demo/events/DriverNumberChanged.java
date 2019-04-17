@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class DriverNumberChanged {
 
+    private String identifier;
+
     private String driverNumber;
 
 }
