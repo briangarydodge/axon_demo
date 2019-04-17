@@ -3,18 +3,15 @@ package com.dodgeb.axon_demo.resources;
 import com.dodgeb.axon_demo.command.ChangeDriverNumber;
 import com.dodgeb.axon_demo.command.CreateDriverCommand;
 import com.dodgeb.axon_demo.models.Driver;
-import com.dodgeb.axon_demo.repositories.MongoDriverRespository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;

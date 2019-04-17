@@ -30,12 +30,9 @@ public class DriverEventListener {
     @EventHandler
     public void handle(DriverNumberChanged event) {
 
-        Driver driver = repository.findByIdentifier(event.getIdentifier()).subList(0,1).get(0);
+        Driver driver = repository.findByIdentifier(event.getIdentifier()).get(0);
         driver.setDriverNumber(event.getDriverNumber());
         repository.save(driver);
-        log.info("Driver: {}", driver);
-
-
 
     }
 

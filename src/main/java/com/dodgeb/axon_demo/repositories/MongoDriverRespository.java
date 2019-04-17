@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface MongoDriverRespository extends MongoRepository<Driver, String> {
 
-
     @Query("{identifier: ?0})")
     List<Driver> findByIdentifier(String identifier);
 

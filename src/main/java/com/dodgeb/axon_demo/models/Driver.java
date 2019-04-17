@@ -14,11 +14,11 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Data
-@Document(collection = "drivers")
-@TypeAlias("Driver")
+@Document(collection = "drivers")  // target mongo collection
+@TypeAlias("Driver")  // set _class in mongo document to Alias
 public class Driver {
 
-    private String _id;
+    private String _id; // Mongo Object Id
 
     @Id
     private String identifier;
