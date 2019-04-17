@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 @Builder
 @Data
 @Document(collection = "drivers")
+@TypeAlias("Driver")
 public class Driver {
 
     private String _id;
