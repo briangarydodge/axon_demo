@@ -8,4 +8,4 @@ basic database of drivers.
 
 ## Contents
 
-#### [1. Getting started]("./document_files/getting_started.md")
+#### [1. Getting started]("/document_files/getting_started.md")
