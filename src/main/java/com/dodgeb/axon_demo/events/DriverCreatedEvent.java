@@ -1,6 +1,5 @@
 package com.dodgeb.axon_demo.events;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
