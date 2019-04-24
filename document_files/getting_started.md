@@ -5,16 +5,18 @@
 
 Before we can begin to produce our event sourced driver application, we need to create a minimal spring boot 
 application, which will serve a the base for the axon components and provide endpoints for passing in data 
-to application.
+to application. Below are three varying ways to get started.
 
-### 1.a via command line (Curl)
+### a. via command line (Curl)
 
 ``` bash
 curl https://start.spring.io/starter.zip -o axon_demo.zip
 ```
 Unzip your application and import into your IDE of choice as a maven project. (For the purposes of this project I am using IntelliJ Idea).
 
-### 1.b via SpringInitializr
+---
+
+### b. via SpringInitializr
 
 Open your navigator of choice and navigate to [start.spring.io](https://start.spring.io).
 
@@ -31,8 +33,9 @@ it is worth pre-selecting **Web** and **Lombok** (More on these later). Click **
 
 Once the file is downloaded, unzip and import into your IDE of choice. (For the purposes of this project I am usinh IntelliJ Idea.)
 
+---
 
-### 1.c via IntelliJ Idea (Ultimate)
+### c. via IntelliJ Idea (Ultimate)
 
 * Select **Create new Project** from IntelliJ's front screen or select **File->New Project** (If the Editor is already open).
 * Select **Spring Initializr** from the left hand pane and leave the url as the default. 
@@ -41,3 +44,13 @@ instance I have used *com.dodgeb*. Artifact is typically your project name, I ha
 * On the **Dependencies** page, select (a) **Lombok** from the **Core** section and **Web** from the **Web** section.
 (More on these later).
 * Finish and wait for IntelliJ to fully load your project.
+
+---
+
+## 2. Finishing off
+
+Once IntelliJ is open and your project is fully loaded, you will have an empty SpringBoot project, with
+the basic building blocks to start coding your Event Sourced application.
+
+In the next section, we will import the various dependencies which will allow us to create the Axon application
+and build tests (using Test Driven Development principles).
