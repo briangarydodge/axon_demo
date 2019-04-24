@@ -1,8 +1,8 @@
 # 2. Updating dependencies
 
 In this section we will be updating the *pom.xml* file to update which depencencies to import, 
-which will allow; 1. Junit 5 testing, 2. Axon Framework (and testing libraries), 3. postgres
-libraries (Which serves a backend to axon), 4. mongo for our read model and JPA for use with postgres.
+which will allow; 1. Junit 5 testing, 2. Axon Framework (and testing libraries). Later we will be importing libraries, but for 
+now we want to get a simple application up and running.
 
 Open the pom.xml, which will be in the root folder of your project, the file should look similar to the following:
 
@@ -72,3 +72,24 @@ First we need to add libraries, ready for JUnit 5 testing, by adding code to the
             <scope>test</scope>
         </dependency>
 ```
+
+Next, we will import Axon Framework and test components:
+
+``` xml
+        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-spring-boot-starter -->
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-test -->
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-test</artifactId>
+            <version>4.1.1</version>
+            <scope>test</scope>
+        </dependency>
+```
+> **Note** Version 4+ of Axon framework, uses Axon Server - so you will need a Axon Running on your host machine.
+> The easiest way is by using docker and running Axon Server as a container. This will be described in the next section.
