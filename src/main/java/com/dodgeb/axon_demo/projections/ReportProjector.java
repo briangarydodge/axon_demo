@@ -3,7 +3,6 @@ package com.dodgeb.axon_demo.projections;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
-import com.dodgeb.axon_demo.events.MIBIAble;
 import com.dodgeb.axon_demo.events.Reportable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -16,7 +15,7 @@ public class ReportProjector {
     @EventHandler
     public void on (Reportable event) throws JsonProcessingException {
 
-        log.info("Object payload 2: {}", event.reportData());
+        log.info("Report payload 2: {}", event.reportData());
     }
 
 

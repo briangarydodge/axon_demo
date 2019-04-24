@@ -1,20 +1,21 @@
 package com.dodgeb.axon_demo.aggregates;
 
-import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
-import com.dodgeb.axon_demo.commands.CreateDriver;
-import com.dodgeb.axon_demo.events.DriverCreatedEvent;
-import com.dodgeb.axon_demo.events.DriverNumberChanged;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.persistence.Id;
+
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import javax.persistence.Id;
+import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
+import com.dodgeb.axon_demo.commands.CreateDriver;
+import com.dodgeb.axon_demo.events.DriverCreatedEvent;
+import com.dodgeb.axon_demo.events.DriverNumberChanged;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Data

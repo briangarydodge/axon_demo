@@ -1,12 +1,13 @@
 package com.dodgeb.axon_demo.config;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientURI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
 
 @Configuration
 public class MongoConfig {
@@ -21,9 +22,7 @@ public class MongoConfig {
     private int connectTimeout;
 
     private MongoClientOptions.Builder mongoClientOption() {
-
         return MongoClientOptions.builder()
-
                 .connectTimeout(connectTimeout);
     }
 
@@ -34,13 +33,7 @@ public class MongoConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() {
-
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoClient(), database);
-
-//        ((MappingMongoConverter) mongoTemplate.getConverter())
-//                .setTypeMapper(new DefaultMongoTypeMapper(null)); //removes _class
-
-        return mongoTemplate;
+        return new MongoTemplate(mongoClient(), database);
     }
 
 }

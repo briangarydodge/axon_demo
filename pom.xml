@@ -59,6 +59,19 @@
             <artifactId>spring-data-mongodb</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-amqp -->
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-amqp</artifactId>
+            <version>3.4.3</version>
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/org.axonframework/axon-test -->

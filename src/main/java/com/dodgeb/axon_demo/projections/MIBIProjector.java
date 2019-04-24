@@ -13,10 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MIBIProjector {
 
-
     @EventHandler
     public void on (MIBIAble event) throws JsonProcessingException {
 
-        log.info("Object payload 2: {}", event.payload());
+        log.info("MIBI payload 2: {}", event.payload());
     }
 }
