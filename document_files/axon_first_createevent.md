@@ -21,4 +21,4 @@ public class DriverCreatedEvent {
 This satisfies the remaining compiler error. However, now our code compiles, the test still fails. This is because we have not implemented
 the logic in our aggregate to process the command or to update the state.
 
-Next. [Axon - First Steps(Handle Commands and Events]()
+Next. [Axon - First Steps(Handle Commands and Events)](axon_first_handle.md)
