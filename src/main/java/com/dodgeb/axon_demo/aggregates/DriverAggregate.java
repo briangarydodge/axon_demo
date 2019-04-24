@@ -30,6 +30,10 @@ public class DriverAggregate {
 
     private String driverNumber;
 
+    /**
+     * Handle CreateDriverCommand.
+     * @param command Command Object with required properties.
+     */
     @CommandHandler
     public DriverAggregate(CreateDriverCommand command) {
         apply(new DriverCreatedEvent(command.getIdentifier(), command.getDriverNumber()));

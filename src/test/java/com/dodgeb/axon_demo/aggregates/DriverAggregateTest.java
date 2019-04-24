@@ -32,10 +32,11 @@ class DriverAggregateTest {
                 .driverNumber(DRIVER_NUMBER)
                 .build();
 
-        DriverCreatedEvent event = DriverCreatedEvent.builder()
-                .identifier(IDENTIFIER)
-                .driverNumber(DRIVER_NUMBER)
-                .build();
+        DriverCreatedEvent event = null;
+//                DriverCreatedEvent.builder()
+//                .identifier(IDENTIFIER)
+//                .driverNumber(DRIVER_NUMBER)
+//                .build();
 
         fixture.givenNoPriorActivity()
                 .when(command)
@@ -46,10 +47,11 @@ class DriverAggregateTest {
     @DisplayName("Test Driver Number Change")
     void changeAddress() {
 
-        DriverCreatedEvent event = DriverCreatedEvent.builder()
-                .identifier(IDENTIFIER)
-                .driverNumber(DRIVER_NUMBER)
-                .build();
+        DriverCreatedEvent event = null;
+//                DriverCreatedEvent.builder()
+//                .identifier(IDENTIFIER)
+//                .driverNumber(DRIVER_NUMBER)
+//                .build();
 
         fixture.given(event)
                 .when(new ChangeDriverNumber("123", "dln444"))
