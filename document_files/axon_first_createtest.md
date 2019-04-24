@@ -40,3 +40,5 @@
  This code will obviously fail (actually it will fail to compile) at this stage, we are now required to define a few things here:
  1. The ```CreateDriverCommand``` class (with builder), and 
  2. The ```DriverCreatedEvent``` class (also with builder).
+ 
+ Next. [Axon - First Steps (Creating our Command)](axon_first_createcommand.md)
