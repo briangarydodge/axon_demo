@@ -1,7 +1,7 @@
-# Getting Started
+# 1. Getting Started
 ***
 
-## 1. Generating your project
+## Generating your project
 
 Before we can begin to produce our event sourced driver application, we need to create a minimal spring boot 
 application, which will serve a the base for the axon components and provide endpoints for passing in data 
@@ -47,10 +47,12 @@ instance I have used *com.dodgeb*. Artifact is typically your project name, I ha
 
 ---
 
-## 2. Finishing off
+## Finishing off
 
 Once IntelliJ is open and your project is fully loaded, you will have an empty SpringBoot project, with
 the basic building blocks to start coding your Event Sourced application.
 
 In the next section, we will import the various dependencies which will allow us to create the Axon application
 and build tests (using Test Driven Development principles).
+
+Next. [Updating Dependencies](updating_dependencies.md)

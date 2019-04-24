@@ -9,3 +9,4 @@ basic database of drivers.
 ## Contents
 
 #### [1. Getting started](/document_files/getting_started.md)
+#### [2. Updating Dependencies](/document_files/updating_dependencies.md)
