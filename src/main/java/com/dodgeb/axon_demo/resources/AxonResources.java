@@ -1,129 +1,76 @@
 package com.dodgeb.axon_demo.resources;
 
-import com.dodgeb.axon_demo.command.ChangeDriverNumber;
-import com.dodgeb.axon_demo.command.CreateDriverCommand;
-import com.dodgeb.axon_demo.models.Driver;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.AbstractMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
+import com.dodgeb.axon_demo.commands.CreateDriver;
+import com.dodgeb.axon_demo.requests.CreateDriverRequest;
+import com.dodgeb.axon_demo.requests.UpdateDriverRequest;
+
+import lombok.extern.slf4j.Slf4j;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController
 @Slf4j
+@RestController
 public class AxonResources {
-
-    private final ObjectMapper mapper;
 
     private final CommandGateway commandGateway;
 
-
-    public AxonResources(CommandGateway commandGateway,
-                         @Qualifier("AppObjectMapper") ObjectMapper mapper) {
+    public AxonResources(final CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
-        this.mapper = mapper;
     }
 
-    @PostMapping(value = "/new",
-            consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity newDriver(final HttpServletRequest request)
-            throws ExecutionException, InterruptedException, IOException {
+    @PostMapping(value = "/new", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity newDriver(@RequestBody final CreateDriverRequest driver)
+            throws ExecutionException, InterruptedException {
 
-        CompletableFuture<String> result = null;
-        String aggregateId = "none";
+        CreateDriver command = CreateDriver.builder()
+                .identifier(UUID.randomUUID().toString())
+                .driverNumber(driver.getDriverNumber())
+                .build();
 
-        Driver driver = mapper.readValue(retrieveJsonBody(request), Driver.class);
+        CompletableFuture<String> commandResponse = commandGateway.send(command);
+        Map.Entry<String, String> result = new AbstractMap.SimpleEntry<>("result", commandResponse.get());
 
-        if(driver != null) {
-            CreateDriverCommand command = CreateDriverCommand.builder()
-                    .identifier(driver.getIdentifier())
-                    .driverNumber(driver.getDriverNumber())
-                    .build();
-            result = commandGateway.send(command);
-        }
-
-        if (result != null) {
-            aggregateId = result.get();
-        }
-
-        return ResponseEntity
-                .ok()
-                .body("{\"AggregateId\": \"" + aggregateId + "\"}");
+        return ResponseEntity.ok().body(result);
     }
 
-    private Map<String, String> parsePathParams(HttpServletRequest request) {
+    @PostMapping(value = "/new/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity newDriver(@RequestBody final CreateDriverRequest driver, @PathVariable("id") String id)
+            throws ExecutionException, InterruptedException {
 
-        Iterator<String> pathParams = Arrays.asList("/update/{id}".split("/")).iterator();
-        Iterator<String> pathValues = Arrays.asList(request.getServletPath().split("/")).iterator();
+        CreateDriver command = CreateDriver.builder()
+                .identifier(id)
+                .driverNumber(driver.getDriverNumber())
+                .build();
 
-        Map<String, String> pathMap = new HashMap<>();
+        CompletableFuture<String> commandResponse = commandGateway.send(command);
 
-        while(pathParams.hasNext() && pathValues.hasNext()) {
-            String key = pathParams.next();
-            String value = pathValues.next();
-            if(key.startsWith("{") && key.endsWith("}")) {
-                key = key.replaceAll("\\{", "");
-                key = key.replaceAll("}", "");
-                pathMap.put(key, value);
-            }
-        }
-        return pathMap;
+        Map.Entry<String, String> result = new AbstractMap.SimpleEntry<>("result", commandResponse.get());
 
+        return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping(name = "/update/{id}",
-            consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity updateDriver(final HttpServletRequest request)
-            throws IOException, ExecutionException, InterruptedException {
+    @PostMapping(value = "/{id}/update", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity updateDriver(@RequestBody UpdateDriverRequest driver, @PathVariable("id") String id) {
+        ChangeDriverNumber command = ChangeDriverNumber.builder()
+                .identifier(id)
+                .driverNumber(driver.getDriverNumber())
+                .build();
 
-        Map<String, String> pathParams = parsePathParams(request);
-        String id = pathParams.get("id");
-
-        Driver driver = mapper.readValue(retrieveJsonBody(request), Driver.class);
-
-        CompletableFuture<String> result = null;
-        if(driver != null) {
-            ChangeDriverNumber command = ChangeDriverNumber.builder()
-                    .identifier(id)
-                    .driverNumber(driver.getDriverNumber())
-                    .build();
-            result = commandGateway.send(command);
-        }
-
-        String aggregateId = "";
-        if(result != null) {
-            aggregateId = result.get();
-        }
-
-        return ResponseEntity
-                .ok()
-                .body("{\"AggregateId\": \"" + aggregateId + "\"}");
-    }
-
-
-    private String retrieveJsonBody(final HttpServletRequest request) throws IOException {
-        String jsonString;
-        try (BufferedReader reader = request.getReader()) {
-            jsonString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        }
-        return jsonString;
+        commandGateway.send(command);
+        return ResponseEntity.ok().body("{ \"result\": \"completed\"}");
     }
 
 }

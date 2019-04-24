@@ -1,7 +1,7 @@
 package com.dodgeb.axon_demo.aggregates;
 
-import com.dodgeb.axon_demo.command.ChangeDriverNumber;
-import com.dodgeb.axon_demo.command.CreateDriverCommand;
+import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
+import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.events.DriverCreatedEvent;
 import com.dodgeb.axon_demo.events.DriverNumberChanged;
 import org.axonframework.test.aggregate.AggregateTestFixture;
@@ -27,7 +27,7 @@ class DriverAggregateTest {
     @DisplayName("Test Driver Creation")
     void driverCreation() {
 
-        CreateDriverCommand command = CreateDriverCommand.builder()
+        CreateDriver command = CreateDriver.builder()
                 .identifier(IDENTIFIER)
                 .driverNumber(DRIVER_NUMBER)
                 .build();

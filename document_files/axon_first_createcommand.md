@@ -5,7 +5,7 @@ clicking on the **com.dodgeb.axon_demo** package and selecting **New** then **Ja
 will create the following class code:
 
 ```java
-package com.dodgeb.axon_demo.command;
+package com.dodgeb.axon_demo.commands;
 
 public class CreateDriverCommand {
 

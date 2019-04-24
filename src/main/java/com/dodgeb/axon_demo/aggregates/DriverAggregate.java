@@ -1,7 +1,7 @@
 package com.dodgeb.axon_demo.aggregates;
 
-import com.dodgeb.axon_demo.command.ChangeDriverNumber;
-import com.dodgeb.axon_demo.command.CreateDriverCommand;
+import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
+import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.events.DriverCreatedEvent;
 import com.dodgeb.axon_demo.events.DriverNumberChanged;
 import lombok.AllArgsConstructor;
@@ -17,11 +17,11 @@ import javax.persistence.Id;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
-@Aggregate
-@Slf4j
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@Slf4j
+@Aggregate
+@NoArgsConstructor
+@AllArgsConstructor
 public class DriverAggregate {
 
     @Id
@@ -31,11 +31,11 @@ public class DriverAggregate {
     private String driverNumber;
 
     /**
-     * Handle CreateDriverCommand.
+     * Handle CreateDriver.
      * @param command Command Object with required properties.
      */
     @CommandHandler
-    public DriverAggregate(CreateDriverCommand command) {
+    public DriverAggregate(CreateDriver command) {
         apply(new DriverCreatedEvent(command.getIdentifier(), command.getDriverNumber()));
     }
 
