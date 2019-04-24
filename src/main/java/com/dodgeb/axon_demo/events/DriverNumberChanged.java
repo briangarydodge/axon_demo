@@ -1,18 +1,19 @@
 package com.dodgeb.axon_demo.events;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
+
+@Slf4j
 @NoArgsConstructor
-@Builder
 @Data
-public class DriverNumberChanged {
+public class DriverNumberChanged extends DomainAbstractEvent {
 
-    private String identifier;
+    private String dateChanged = "changed";
 
-    private String driverNumber;
-
+    public DriverNumberChanged(String identifier, String driverNumber) {
+        super(identifier, driverNumber);
+    }
 }
