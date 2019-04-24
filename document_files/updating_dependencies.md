@@ -93,3 +93,5 @@ Next, we will import Axon Framework and test components:
 ```
 > **Note** Version 4+ of Axon framework, uses Axon Server - so you will need a Axon Running on your host machine.
 > The easiest way is by using docker and running Axon Server as a container. This will be described in the next section.
+
+Next. [Docker Compose - Part 1](docker-compose_part1.md)
