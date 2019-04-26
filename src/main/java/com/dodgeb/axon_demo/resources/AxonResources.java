@@ -1,6 +1,7 @@
 package com.dodgeb.axon_demo.resources;
 
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,8 @@ import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
 import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.requests.CreateDriverRequest;
 import com.dodgeb.axon_demo.requests.UpdateDriverRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -36,7 +39,7 @@ public class AxonResources {
 
     @PostMapping(value = "/new", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity newDriver(@RequestBody final CreateDriverRequest driver)
-            throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException, JsonProcessingException {
 
         CreateDriver command = CreateDriver.builder()
                 .identifier(UUID.randomUUID().toString())
@@ -44,7 +47,8 @@ public class AxonResources {
                 .build();
 
         CompletableFuture<String> commandResponse = commandGateway.send(command);
-        Map.Entry<String, String> result = new AbstractMap.SimpleEntry<>("result", commandResponse.get());
+
+        String result = new ObjectMapper().writeValueAsString(new AbstractMap.SimpleEntry<>("result", commandResponse.get()));
 
         return ResponseEntity.ok().body(result);
     }
