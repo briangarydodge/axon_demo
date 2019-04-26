@@ -13,6 +13,7 @@ public class DriverNumberChanged extends DomainAbstractEvent {
 
     private String dateChanged = "changed";
 
+    @Builder
     public DriverNumberChanged(String identifier, String driverNumber) {
         super(identifier, driverNumber);
     }
