@@ -1,6 +1,5 @@
 package com.dodgeb.axon_demo.resources;
 
-import java.util.AbstractMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -19,10 +18,12 @@ import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.requests.CreateDriverRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.dodgeb.axon_demo.TestHelpers.isUUID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,20 +36,15 @@ class AxonResourcesTest {
 
     private static final String DRIVER_NUMBER = "123abc";
 
-    private static final CreateDriverRequest request = new CreateDriverRequest(DRIVER_NUMBER);
+    private static final CreateDriverRequest CREATE_DRIVER_REQUEST = new CreateDriverRequest(DRIVER_NUMBER);
 
-    private static final CreateDriver command = CreateDriver.builder()
-            .identifier(UUID_ID)
-            .driverNumber(request.getDriverNumber())
-            .build();
-
+    private static final String RESULT_STRING = "result";
 
     @InjectMocks
     AxonResources controller;
 
     @Mock
     CommandGateway commandGateway;
-
 
     @BeforeEach
     void setup() {
@@ -62,28 +58,20 @@ class AxonResourcesTest {
 
         when(commandGateway.send(any(CreateDriver.class))).thenReturn(CompletableFuture.completedFuture(UUID_ID));
 
-        ResponseEntity result = controller.newDriver(request);
+        ResponseEntity result = controller.newDriver(CREATE_DRIVER_REQUEST);
+        assumeTrue(result != null, "Response entity not provided.");
+        assumeTrue(result.getBody() != null, "Response entity body not available.");
         Map<String, String> resultBody = MAPPER.readValue(result.getBody().toString(), Map.class);
 
         assertAll( () -> {
             verify(commandGateway).send(any(CreateDriver.class));
             assertThat(result.getStatusCode(), is(HttpStatus.OK));
-            assertThat(resultBody.get("result"), instanceOf(String.class));
-            assertThat(isUUID(resultBody.get("result")), is(true));
+            assertThat(resultBody.get(RESULT_STRING), instanceOf(String.class));
+            assertThat(isUUID(resultBody.get(RESULT_STRING)), is(true));
         });
 
     }
 
 
-    private boolean isUUID(String uuid) {
-        boolean result = false;
-        try {
-            UUID id = UUID.fromString(uuid);
-            result = true;
-        } catch (IllegalArgumentException exception) {
-            // do nothing
-        }
-        return result;
-    }
 
 }
