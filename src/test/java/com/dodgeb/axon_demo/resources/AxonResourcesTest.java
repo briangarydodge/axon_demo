@@ -18,6 +18,7 @@ import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.requests.CreateDriverRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.dodgeb.axon_demo.TestHelpers.getFixture;
 import static com.dodgeb.axon_demo.TestHelpers.isUUID;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,10 +34,6 @@ class AxonResourcesTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final String UUID_ID = UUID.randomUUID().toString();
-
-    private static final String DRIVER_NUMBER = "123abc";
-
-    private static final CreateDriverRequest CREATE_DRIVER_REQUEST = new CreateDriverRequest(DRIVER_NUMBER);
 
     private static final String RESULT_STRING = "result";
 
@@ -58,7 +55,9 @@ class AxonResourcesTest {
 
         when(commandGateway.send(any(CreateDriver.class))).thenReturn(CompletableFuture.completedFuture(UUID_ID));
 
-        ResponseEntity result = controller.newDriver(CREATE_DRIVER_REQUEST);
+        CreateDriverRequest request = getFixture("fixtures/requests/create_driver_request.json", CreateDriverRequest.class);
+
+        ResponseEntity result = controller.newDriver(request);
         assumeTrue(result != null, "Response entity not provided.");
         assumeTrue(result.getBody() != null, "Response entity body not available.");
         Map<String, String> resultBody = MAPPER.readValue(result.getBody().toString(), Map.class);
@@ -69,9 +68,6 @@ class AxonResourcesTest {
             assertThat(resultBody.get(RESULT_STRING), instanceOf(String.class));
             assertThat(isUUID(resultBody.get(RESULT_STRING)), is(true));
         });
-
     }
-
-
 
 }
