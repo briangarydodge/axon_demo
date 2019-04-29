@@ -42,7 +42,7 @@ public class TestHelpers {
      *  <b>Note</b>
      *  You do not need to explicitly provide the full path of the file i.e.
      *      {project}/src/test/resources/fixtures/input/test.json
-     *  would result in an exception due missing file.
+     *  this would result in null being returned as a result of a missing file.
      * @param path Location of fixture in Test Resources.
      * @param valueType Required class type when generating returned object.
      * @param <T> Generic Template for returned class type.

@@ -14,8 +14,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
 import com.dodgeb.axon_demo.commands.CreateDriver;
 import com.dodgeb.axon_demo.requests.CreateDriverRequest;
+import com.dodgeb.axon_demo.requests.UpdateDriverRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.dodgeb.axon_demo.TestHelpers.getFixture;
@@ -67,6 +69,51 @@ class AxonResourcesTest {
             assertThat(result.getStatusCode(), is(HttpStatus.OK));
             assertThat(resultBody.get(RESULT_STRING), instanceOf(String.class));
             assertThat(isUUID(resultBody.get(RESULT_STRING)), is(true));
+        });
+    }
+
+    @Test
+    @DisplayName("Create Driver With ID Test")
+    @SuppressWarnings("unchecked")
+    void newDriverWithId() throws Exception {
+
+        when(commandGateway.send(any(CreateDriver.class))).thenReturn(CompletableFuture.completedFuture(UUID_ID));
+
+        CreateDriverRequest request = getFixture("fixtures/requests/create_driver_request.json", CreateDriverRequest.class);
+
+        ResponseEntity result = controller.newDriver(request, UUID_ID);
+        assumeTrue(result != null, "Response entity not provided.");
+        assumeTrue(result.getBody() != null, "Response entity body not available.");
+        Map<String, String> resultBody = MAPPER.readValue(result.getBody().toString(), Map.class);
+
+        assertAll( () -> {
+            verify(commandGateway).send(any(CreateDriver.class));
+            assertThat(result.getStatusCode(), is(HttpStatus.OK));
+            assertThat(resultBody.get(RESULT_STRING), instanceOf(String.class));
+            assertThat(isUUID(resultBody.get(RESULT_STRING)), is(true));
+            assertThat(resultBody.get(RESULT_STRING), is(UUID_ID));
+        });
+    }
+
+    @Test
+    @DisplayName("Update Driver Number")
+    @SuppressWarnings("unchecked")
+    void changeDriverNumber() throws Exception {
+
+        when(commandGateway.send(any(ChangeDriverNumber.class))).thenReturn(CompletableFuture.completedFuture(null));
+
+        UpdateDriverRequest request = getFixture("fixtures/requests/change_driver_number_request.json", UpdateDriverRequest.class);
+
+        ResponseEntity result = controller.updateDriver(request, UUID_ID);
+        assumeTrue(result != null, "Response entity not provided.");
+        assumeTrue(result.getBody() != null, "Response entity body not available.");
+        Map<String, String> resultBody = MAPPER.readValue(result.getBody().toString(), Map.class);
+
+        assertAll( () -> {
+            verify(commandGateway).send(any(ChangeDriverNumber.class));
+            assertThat(result.getStatusCode(), is(HttpStatus.OK));
+            assertThat(resultBody.get(RESULT_STRING), instanceOf(String.class));
+            assertThat(isUUID(resultBody.get(RESULT_STRING)), is(false));
         });
     }
 

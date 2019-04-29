@@ -55,7 +55,7 @@ public class AxonResources {
 
     @PostMapping(value = "/new/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity newDriver(@RequestBody final CreateDriverRequest driver, @PathVariable("id") String id)
-            throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException, JsonProcessingException {
 
         CreateDriver command = CreateDriver.builder()
                 .identifier(id)
@@ -64,7 +64,7 @@ public class AxonResources {
 
         CompletableFuture<String> commandResponse = commandGateway.send(command);
 
-        Map.Entry<String, String> result = new AbstractMap.SimpleEntry<>("result", commandResponse.get());
+        String result = new ObjectMapper().writeValueAsString(new AbstractMap.SimpleEntry<>("result", commandResponse.get()));
 
         return ResponseEntity.ok().body(result);
     }
