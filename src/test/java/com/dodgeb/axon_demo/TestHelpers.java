@@ -29,6 +29,20 @@ public class TestHelpers {
 
     /**
      * Retrieve a System Resource Fixture and Serialize to specialised class type.
+     * Load a Json file into memory and map to specific object.
+     * Use:
+     *  Save a Json file inside the test resources folder (src->test->resources).
+     *  Files can be in sub folders, as long as the path supplied to the function
+     *  clearly references the sub path.
+     *  Example; if <b>example.json</b> is stored in the folder <i>fixtures/input</i>,
+     *  the function would be:
+     *      <code>
+     *          Map<String, String> result = getFixture("fixtures/input/test.json", Map.class);
+     *      </code>
+     *  <b>Note</b>
+     *  You do not need to explicitly provide the full path of the file i.e.
+     *      {project}/src/test/resources/fixtures/input/test.json
+     *  would result in an exception due missing file.
      * @param path Location of fixture in Test Resources.
      * @param valueType Required class type when generating returned object.
      * @param <T> Generic Template for returned class type.
