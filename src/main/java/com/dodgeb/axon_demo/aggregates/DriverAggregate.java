@@ -22,7 +22,6 @@ import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 @Slf4j
 @Aggregate
 @NoArgsConstructor
-@AllArgsConstructor
 public class DriverAggregate {
 
     @Id

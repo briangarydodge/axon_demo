@@ -40,6 +40,8 @@ class DriverAggregateTest {
         fixture.givenNoPriorActivity()
                 .when(command)
                 .expectEvents(event);
+
+
     }
 
     @Test
