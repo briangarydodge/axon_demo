@@ -9,16 +9,17 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
 import com.dodgeb.axon_demo.commands.CreateDriver;
+import com.dodgeb.axon_demo.commands.RenameDriver;
 import com.dodgeb.axon_demo.events.DriverCreatedEvent;
+import com.dodgeb.axon_demo.events.DriverNameChanged;
 import com.dodgeb.axon_demo.events.DriverNumberChanged;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
-@Data
+@Getter
 @Slf4j
 @Aggregate
 @NoArgsConstructor
@@ -27,8 +28,8 @@ public class DriverAggregate {
     @Id
     @AggregateIdentifier
     private String identifier;
-
     private String driverNumber;
+    private String driverName;
 
     /**
      * Handle CreateDriver.
@@ -36,7 +37,12 @@ public class DriverAggregate {
      */
     @CommandHandler
     public DriverAggregate(CreateDriver command) {
-        apply(new DriverCreatedEvent(command.getIdentifier(), command.getDriverNumber()));
+        apply(
+                DriverCreatedEvent.builder()
+                        .identifier(command.getIdentifier())
+                        .driverNumber(command.getDriverNumber())
+                        .build()
+        );
     }
 
     @EventSourcingHandler
@@ -47,12 +53,32 @@ public class DriverAggregate {
 
     @CommandHandler
     public void on(ChangeDriverNumber command) {
-        apply(new DriverNumberChanged(command.getIdentifier(), command.getDriverNumber()));
+        apply(
+                DriverNumberChanged.builder()
+                        .identifier(command.getIdentifier())
+                        .driverNumber(command.getDriverNumber())
+                        .build()
+        );
     }
 
     @EventSourcingHandler
     public void handle(DriverNumberChanged event) {
         this.driverNumber = event.getDriverNumber();
     }
+
+    @CommandHandler
+    public void on(RenameDriver command){
+        apply(
+                DriverNameChanged.builder()
+                        .name(command.getName())
+                        .build()
+        );
+    }
+
+    @EventSourcingHandler
+    public void handle(DriverNameChanged event) {
+        this.driverName = event.getName();
+    }
+
 
 }

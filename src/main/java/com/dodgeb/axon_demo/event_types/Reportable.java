@@ -1,4 +1,4 @@
-package com.dodgeb.axon_demo.events;
+package com.dodgeb.axon_demo.event_types;
 
 public interface Reportable {
 

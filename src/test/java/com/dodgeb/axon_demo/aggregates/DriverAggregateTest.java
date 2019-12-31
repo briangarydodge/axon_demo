@@ -2,7 +2,9 @@ package com.dodgeb.axon_demo.aggregates;
 
 import com.dodgeb.axon_demo.commands.ChangeDriverNumber;
 import com.dodgeb.axon_demo.commands.CreateDriver;
+import com.dodgeb.axon_demo.commands.RenameDriver;
 import com.dodgeb.axon_demo.events.DriverCreatedEvent;
+import com.dodgeb.axon_demo.events.DriverNameChanged;
 import com.dodgeb.axon_demo.events.DriverNumberChanged;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.Test;
 class DriverAggregateTest {
 
     private static final String IDENTIFIER = "123";
-
     private static final String DRIVER_NUMBER = "dln123";
 
     private AggregateTestFixture<DriverAggregate> fixture;
@@ -54,10 +55,23 @@ class DriverAggregateTest {
                 .build();
 
         fixture.given(event)
-                .when(new ChangeDriverNumber(IDENTIFIER, DRIVER_NUMBER))
-                .expectEvents(new DriverNumberChanged(IDENTIFIER, DRIVER_NUMBER));
+                .when(ChangeDriverNumber.builder().identifier(IDENTIFIER).driverNumber(DRIVER_NUMBER).build())
+                .expectEvents(DriverNumberChanged.builder().identifier(IDENTIFIER).driverNumber(DRIVER_NUMBER).build());
 
 
+    }
+
+    @Test
+    @DisplayName("Test changing the drivers name")
+    void changeName() {
+        DriverCreatedEvent event = DriverCreatedEvent.builder()
+                .identifier(IDENTIFIER)
+                .driverNumber(DRIVER_NUMBER)
+                .build();
+
+        fixture.given(event)
+                .when(RenameDriver.builder().identifier(IDENTIFIER).name("Test").build())
+                .expectEvents(DriverNameChanged.builder().name("Test").build());
     }
 
 }

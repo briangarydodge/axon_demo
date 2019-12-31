@@ -7,13 +7,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-
 @SuperBuilder
 @Getter
-public class DriverNumberChanged extends Event implements MIBIAble, Reportable {
-
-    private String dateChanged = "changed";
-    private String driverNumber;
+public class DriverNameChanged extends Event implements MIBIAble, Reportable {
+    private String name;
 
     @Override
     public String reportData() {

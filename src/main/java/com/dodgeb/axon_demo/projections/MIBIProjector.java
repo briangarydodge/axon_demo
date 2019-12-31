@@ -4,7 +4,7 @@ package com.dodgeb.axon_demo.projections;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
-import com.dodgeb.axon_demo.events.MIBIAble;
+import com.dodgeb.axon_demo.event_types.MIBIAble;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
